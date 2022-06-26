@@ -1,0 +1,225 @@
+package com.github.youssefwadie.payroll.seeders;
+
+import com.github.youssefwadie.payroll.entities.*;
+import com.github.youssefwadie.payroll.repositories.DepartmentRepository;
+import com.github.youssefwadie.payroll.repositories.EmployeeRepository;
+import com.github.youssefwadie.payroll.repositories.PayslipRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Random;
+
+@AllArgsConstructor
+@Component
+public class EmployeeSeeder {
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
+
+    private final PayslipRepository payslipRepository;
+
+    private final static String[] firstNames =
+            {"John", "William", "James", "Charles", "George", "Frank", "Joseph", "Thomas",
+                    "Henry", "Robert", "Edward", "Harry", "Walter", "Arthur", "Fred", "Albert", "Samuel", "David", "Louis", "Joe",
+                    "Willie", "Alfred", "Sam", "Roy", "Herbert", "Jacob", "Tom", "Mary", "Anna", "Emma", "Elizabeth", "Minnie",
+                    "Margaret", "Ida", "Clara", "Bertha", "Annie", "Alice", "Florence", "Grace", "Sarah", "Bessie", "Martha",
+                    "Nellie", "Ethel", "Ella", "Mabel",};
+
+    private final static String[] lastNames = {"Charlie", "Clarence", "Richard", "Andrew", "Daniel", "Ernest", "Will",
+            "Jesse", "Oscar", "Lewis", "Peter", "Elmer", "Francis", "Dewey", "Lawrence", "Alfred", "Daniel", "Leo", "Sam",
+            "Eugene", "Oscar", "Jesse", "Will", "Herman", "Benjamin", "Frederick", "Chester", "Tom", "Lloyd", "Leroy",
+            "Jessie", "Jim", "Martin", "Ben", "Donald", "Eddie", "Stanley", "Cecil", "Theodore", "Harvey", "Edgar",
+            "Luther", "Homer", "Norman", "Philip", "Bernard", "Patrick", "Kenneth", "Hugh",
+    };
+
+    private final static String[] emailSeparators = {".", "_", ""};
+    private final static String[] emailProviders =
+            {"gmail.com", "yahoo.com", "hitmail.com", "rxdoc.biz", "cox.com", "126.net", "126.com", "comast.com", "comast.net",
+                    "yandex.com", "wegas.ru", "twc.com", "charter.com", "outlook.com", "gmx.com", "ddns.org", "findhere.com",
+                    "freeservers.com", "hotmail.com"};
+
+    private final static String[] states = {
+            "Florida",
+            "Michigan",
+            "Michigan",
+            "Pennsylvania",
+            "Texas",
+            "Aldford",
+            "Aldridge",
+            "Alveley",
+            "Amersham"
+    };
+
+    private final static String[] cities = {
+            "Houston",
+            "Philadelphia",
+            "Alexandria",
+            "Metairie",
+            "Northville",
+            "Boca Raton",
+            "Grand Forks",
+            "Downers Grove",
+            "Harleigh"
+    };
+
+    private static final String[] streetNames = {
+            "Ashton Lane",
+            "Golf Course Drive",
+            "Formula Lane",
+            "Lang Avenue",
+            "Selah Way",
+            "Little Acres Lane",
+            "Cheshire Road",
+            "Trymore Road",
+            "Michigan Avenue",
+            "Oak Drive"
+    };
+
+    private final Random random = new Random();
+
+    public Long employeesCount() {
+        return employeeRepository.count();
+    }
+    public void seedEmployee() {
+        Employee employee = new Employee();
+
+        String fullName = getFullName();
+        employee.setFullName(fullName);
+        employee.setEmail(getEmailForName(fullName));
+        employee.setDateOfBirth(getDateOfBirth());
+        employee.setAddress(getAddress());
+        employee.setBasicSalary(getRandomBigDecimal());
+        employee.setEmploymentType(getEmploymentType());
+        employee.setHiredDate(getHiredDate());
+        employee.setSocialSecurityNumber(getSsnForName(fullName));
+        employee.setDepartment(departmentRepository.findById(random.nextLong(1, 10)).get());
+
+        for (int i = 0, counter = random.nextInt(4); i < counter; ++i) {
+            Allowance allowance = new Allowance();
+            allowance.setAllowanceName("Over Time");
+            allowance.setAllowanceAmount(getRandomBigDecimal(employee.getBasicSalary()));
+            employee.getEmployeeAllowances().add(allowance);
+        }
+        Payslip currentPayslip = new Payslip();
+        PayPeriod payPeriod = new PayPeriod();
+        LocalDate today = LocalDate.now();
+        payPeriod.setStartDate(LocalDate.of(today.getYear(), today.getMonth(), 1));
+        payPeriod.setEndDate(LocalDate.of(today.getYear(), today.getMonth(), today.lengthOfMonth()));
+
+        currentPayslip.setEmployee(employee);
+        currentPayslip.setDepartmentName(employee.getDepartment().getName());
+        currentPayslip.setPayPeriod(payPeriod);
+        currentPayslip.setBasicSalary(employee.getBasicSalary());
+        currentPayslip.setTotalDeductions(getTotalDeductions(employee));
+        currentPayslip.setTotalAllowances(
+                employee.getEmployeeAllowances()
+                        .stream()
+                        .map(Allowance::getAllowanceAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add)
+        );
+        employeeRepository.saveAndFlush(employee);
+        employee.setCurrentPayslip(currentPayslip);
+        payslipRepository.saveAndFlush(currentPayslip);
+        employeeRepository.save(employee);
+    }
+
+
+    private String getFullName() {
+        String firstName = getRandom(firstNames);
+        String lastName = getRandom(lastNames);
+        return String.format("%s %s", firstName, lastName);
+    }
+
+    private String getEmailForName(String name) {
+        String[] nameParts = name.split("\\s");
+        String separator = getRandom(emailSeparators);
+        String emailProvider = getRandom(emailProviders);
+        int num = random.nextInt(0, Integer.MAX_VALUE);
+        return String.format("%s%s%s%d@%s", nameParts[0], separator, nameParts[1], num, emailProvider);
+    }
+
+
+    private String getSsnForName(String name) {
+        int nameHashCode = name.hashCode() % 100_000_000;
+        int randomNumber = random.nextInt(999_999_999);
+        return String.format("%09d", (nameHashCode + randomNumber) % 999_999_999);
+    }
+
+    private Address getAddress() {
+        Address address = new Address();
+        address.setCountry("United Kingdom");
+        address.setCity(getRandom(cities));
+        address.setState(getRandom(states));
+        address.setStreetAddress(getStreetAddress());
+        address.setPhone(getPhoneNumber());
+        address.setZipCode(getZipCode());
+        return address;
+    }
+
+    private String getStreetAddress() {
+        return String.format("%d %s", random.nextInt(1, 9000), getRandom(streetNames));
+    }
+
+    private String getPhoneNumber() {
+        return String.format("%03d %03d %03d",
+                random.nextInt(999),
+                random.nextInt(999),
+                random.nextInt(999));
+    }
+
+    private String getZipCode() {
+        final String SALT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder sb = new StringBuilder(8);
+        for (int i = 0; i < 4; i++) {
+            sb.append(SALT.charAt(random.nextInt(SALT.length())));
+        }
+        sb.append(' ');
+        for (int i = 0; i < 3; i++) {
+            sb.append(SALT.charAt(random.nextInt(SALT.length())));
+        }
+        return sb.toString();
+    }
+
+    private <T> T getRandom(T[] elements) {
+        return elements[random.nextInt(elements.length)];
+    }
+
+    private BigDecimal getRandomBigDecimal() {
+
+        return BigDecimal.valueOf(random.nextInt(0, Integer.MAX_VALUE) * random.nextDouble() +
+                random.nextInt(0, Integer.MAX_VALUE));
+    }
+
+    private BigDecimal getRandomBigDecimal(BigDecimal max) {
+        BigDecimal randomBigDecimal = getRandomBigDecimal();
+        if (randomBigDecimal.compareTo(max) > 0) {
+            randomBigDecimal = randomBigDecimal.subtract(max);
+        }
+
+        return randomBigDecimal;
+    }
+
+    private BigDecimal getTotalDeductions(Employee employee) {
+        BigDecimal totalDeductions = getRandomBigDecimal();
+        if (employee.getBasicSalary().compareTo(totalDeductions) < 0) {
+            employee.setBasicSalary(employee.getBasicSalary().add(totalDeductions));
+        }
+        return totalDeductions;
+    }
+
+    private LocalDate getDateOfBirth() {
+        return LocalDate.of(random.nextInt(1986, 2000), random.nextInt(1, 13), random.nextInt(1, 31));
+    }
+
+    private EmploymentType getEmploymentType() {
+        return getRandom(EmploymentType.values());
+    }
+
+    private LocalDate getHiredDate() {
+        return LocalDate.of(random.nextInt(2013, 2022),
+                random.nextInt(1, 13),
+                random.nextInt(1, 28));
+    }
+
+}
