@@ -35,6 +35,7 @@ public class ProjectsSeeder {
 
 
         Project CSVCleanerProj = new Project();
+        CSVCleanerProj.setName("CSV Cleaner");
         CSVCleanerProj.setEmail("csv-cleaner-proj@payroll.com");
         CSVCleanerProj.setStartDate(projectStartDate);
 

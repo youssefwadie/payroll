@@ -1,7 +1,6 @@
 package com.github.youssefwadie.payroll.config;
 
 
-
 import com.github.youssefwadie.payroll.entities.AbstractEntity;
 
 import javax.persistence.PrePersist;

@@ -9,10 +9,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @ComponentScan(basePackages = {"com.github.youssefwadie.payroll"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PayrollServiceTests {
@@ -22,10 +23,10 @@ public class PayrollServiceTests {
 
     @Test
     public void testPayroll() throws ExecutionException, InterruptedException {
-        CompletableFuture<PayrollReport> payroll =
-                payrollService.payroll(LocalDate.of(2022, 6, 1),
-                        LocalDate.of(2022, 10, 30));
-
+        LocalDateTime startTime = LocalDateTime.of(2022, 6, 1, 8, 0, 0);
+        LocalDateTime endTime = LocalDateTime.of(2022, 6, 30, 23, 59, 59);
+        CompletableFuture<PayrollReport> payroll = payrollService.payroll(startTime, endTime);
+        payroll.get();
         PayrollReport payrollReport = payroll.get();
         for (EmployeeReport report : payrollReport.getEmployeeReports()) {
             System.out.println(report);

@@ -10,6 +10,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Query("SELECT d FROM Department d WHERE d.name = ?1")
     Department findByName(String name);
 
-    @Query("SELECT d FROM Department d LEFT JOIN FETCH d.employees WHERE d.id = ?1")
+    @Query("SELECT DISTINCT (d) FROM Department d LEFT JOIN FETCH d.employees WHERE d.id = ?1")
     Optional<Department> findDepartmentWithEmployees(Long id);
 }

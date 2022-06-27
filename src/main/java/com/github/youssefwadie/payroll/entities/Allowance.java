@@ -3,11 +3,10 @@ package com.github.youssefwadie.payroll.entities;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,9 +14,19 @@ import java.math.BigDecimal;
 @Table(name = "allowances")
 public class Allowance extends AbstractEntity {
 
-    @NotEmpty(message = "Allowance name must be set")
-    private String allowanceName;
+    @NotBlank(message = "Allowance name must be set")
+    private String allowance;
+
+    private String description;
 
     @NotNull(message = "Allowance amount must be set")
-    private BigDecimal allowanceAmount;
+    private Double amount;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "allowance_type")
+    private AllowanceType allowanceType;
+
+    @Column(name = "effective_date")
+    private LocalDate effectiveDate;
 }

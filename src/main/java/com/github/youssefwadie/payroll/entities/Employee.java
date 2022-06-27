@@ -14,7 +14,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -45,12 +44,28 @@ public class Employee extends AbstractEntity {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;      // yyyy-MM-dd
 
+    @Embedded
+    private Address address;
+
+    @JsonProperty(value = "age", defaultValue = "19")
+    @DecimalMin(value = "18", message = "Age must exceed 18")
+    @DecimalMax(value = "60", message = "Age must cannot exceed 60")
+    private int age;
+
+    @ElementCollection
+    @CollectionTable(name = "qualifications", joinColumns = @JoinColumn(name = "employee_id"))
+    private Collection<Qualification> qualifications = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "current_payslip_id")
+    private Payslip currentPayslip;
+
 
     @NotNull(message = "Basic salary must be set")
     @DecimalMin(value = "500", message = "Basic salary must be equal to or exceed 500")
     @JsonProperty(value = "basic_salary")
     @Column(name = "basic_salary")
-    private BigDecimal basicSalary;
+    private Double basicSalary;
 
     @NotNull(message = "Hired date must be set")
     @PastOrPresent(message = "Hired date must be in the past or present")
@@ -75,34 +90,12 @@ public class Employee extends AbstractEntity {
     @JsonProperty(value = "employment_type")
     private EmploymentType employmentType;
 
-    @Embedded
-    private Address address;
-
-    @ElementCollection
-    @CollectionTable(name = "qualifications", joinColumns = @JoinColumn(name = "employee_id"))
-    private Collection<Qualification> qualifications = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "nick_names")
-    private Collection<String> nickNames = new ArrayList<>();
-
-    @JsonProperty(value = "age", defaultValue = "19")
-    @DecimalMin(value = "18", message = "Age must exceed 18")
-    @DecimalMax(value = "60", message = "Age must cannot exceed 60")
-    private int age;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "employees_allowances",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id")
             , inverseJoinColumns = @JoinColumn(name = "allowance_id", referencedColumnName = "id"))
     private Set<Allowance> employeeAllowances = new HashSet<>();
-
-    @OneToOne
-    @JoinColumn(name = "current_payslip_id")
-    private Payslip currentPayslip;
-
-    @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private ParkingSpace parkingSpace;
 
 
     @OneToMany(mappedBy = "employee")

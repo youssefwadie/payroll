@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -26,7 +25,7 @@ public class PayslipRepositoryTests {
     public void testCreateFirstPayslipForITDep() {
         Payslip payslip = new Payslip();
         payslip.setDepartmentName("IT101M");
-        payslip.setBasicSalary(new BigDecimal("6000"));
+        payslip.setBasicSalary(6000d);
         PayPeriod payPeriod = new PayPeriod();
         payPeriod.setStartDate(LocalDate.of(2022, 8, 1));
         payslip.setPayPeriod(payPeriod);
@@ -39,7 +38,7 @@ public class PayslipRepositoryTests {
     public void testCreateSecondPayslipForITDep() {
         Payslip payslip = new Payslip();
         payslip.setDepartmentName("IT101M");
-        payslip.setBasicSalary(new BigDecimal("8000"));
+        payslip.setBasicSalary(8000d);
         PayPeriod payPeriod = new PayPeriod();
         payPeriod.setStartDate(LocalDate.of(2022, 8, 1));
         payslip.setPayPeriod(payPeriod);
@@ -53,7 +52,7 @@ public class PayslipRepositoryTests {
     public void testCreateThirdPayslip() {
         Payslip payslip = new Payslip();
         payslip.setDepartmentName("HR101S");
-        payslip.setBasicSalary(new BigDecimal("10000"));
+        payslip.setBasicSalary(10000d);
         PayPeriod payPeriod = new PayPeriod();
         payPeriod.setStartDate(LocalDate.of(2022, 8, 1));
         payslip.setPayPeriod(payPeriod);

@@ -28,7 +28,7 @@ public class Project extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(name = "employees_projects",
-    joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Collection<Employee> employees;
 }

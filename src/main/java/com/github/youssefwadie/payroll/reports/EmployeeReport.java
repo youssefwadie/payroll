@@ -2,21 +2,20 @@ package com.github.youssefwadie.payroll.reports;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Data
 public class EmployeeReport {
     private final String employeeName;
     private final String employeeDepartment;
-    private final BigDecimal grossPay;
-    private final BigDecimal totalWithholding;
-    private final BigDecimal netAmountPayable;
+    private final Double grossPay;
+    private final Double totalWithholding;
+    private final Double netAmountPayable;
 
-    public EmployeeReport(String employeeName, String employeeDepartment, BigDecimal grossPay, BigDecimal totalWithholding) {
+    public EmployeeReport(String employeeName, String employeeDepartment, Double grossPay, Double totalWithholding) {
         this.employeeName = employeeName;
         this.employeeDepartment = employeeDepartment;
         this.grossPay = grossPay;
         this.totalWithholding = totalWithholding;
-        this.netAmountPayable = grossPay.subtract(totalWithholding);
+        this.netAmountPayable = grossPay - totalWithholding;
     }
+
 }

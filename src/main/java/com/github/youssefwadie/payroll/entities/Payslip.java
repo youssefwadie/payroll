@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -22,13 +21,13 @@ public class Payslip extends AbstractEntity {
     private PayPeriod payPeriod;
 
     @Column(name = "total_allowances")
-    private BigDecimal totalAllowances;
+    private Double totalAllowances;
 
     @Column(name = "total_deductions")
-    private BigDecimal totalDeductions;
+    private Double totalDeductions;
 
     @Column(name = "basic_salary")
-    private BigDecimal basicSalary;
+    private Double basicSalary;
 
     @ManyToOne
     @JoinColumn(name = "employee_id", referencedColumnName = "id")

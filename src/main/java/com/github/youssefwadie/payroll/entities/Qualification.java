@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.time.LocalDate;
+
 @Getter
 @Setter
 @Embeddable

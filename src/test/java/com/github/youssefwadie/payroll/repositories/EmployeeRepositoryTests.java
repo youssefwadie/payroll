@@ -3,16 +3,13 @@ package com.github.youssefwadie.payroll.repositories;
 import com.github.youssefwadie.payroll.entities.Address;
 import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.entities.Payslip;
-import com.github.youssefwadie.payroll.reports.EmployeeReport;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,7 +28,7 @@ public class EmployeeRepositoryTests {
         employee.setEmail("youssefwadie14@gmail.com");
         employee.setDateOfBirth(LocalDate.of(2000, 7, 28));
         employee.setHiredDate(LocalDate.of(2021, 8, 25));
-        employee.setBasicSalary(new BigDecimal("8000"));
+        employee.setBasicSalary(8000d);
 
         Address address = new Address();
         address.setStreetAddress("31");
@@ -41,7 +38,7 @@ public class EmployeeRepositoryTests {
 
 
         Payslip payslip = new Payslip();
-        payslip.setBasicSalary(new BigDecimal("6000"));
+        payslip.setBasicSalary(6000d);
         payslip.setDepartmentName("com");
     }
 
@@ -73,28 +70,4 @@ public class EmployeeRepositoryTests {
     }
 
 
-    @Test
-    public void testGetEmployeesWithPayslipsInPeriod() {
-        List<Employee> employees = employeeRepository.getEmployeesWithPayslipsInPeriod(LocalDate.of(2022, 6, 1),
-                LocalDate.of(2022, 6, 30));
-
-        List<EmployeeReport> reports = new LinkedList<>();
-        for (Employee employee : employees) {
-            BigDecimal grossPay = BigDecimal.ZERO;
-            BigDecimal totalWithholding = BigDecimal.ZERO;
-            for (Payslip payslip : employee.getPastPayslips()) {
-                totalWithholding = totalWithholding.add(payslip.getTotalDeductions());
-                grossPay = grossPay.add(payslip.getBasicSalary()).add(payslip.getTotalAllowances());
-            }
-            reports.add(new EmployeeReport(employee.getFullName(), employee.getDepartment().getName(),
-                    grossPay, totalWithholding));
-        }
-
-        for (EmployeeReport report : reports) {
-            System.out.println("===================================");
-            System.out.println(report.getEmployeeName());
-            System.out.println(report.getNetAmountPayable());
-            System.out.println("===================================");
-        }
-    }
 }

@@ -2,22 +2,25 @@ package com.github.youssefwadie.payroll.reports;
 
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
 @Getter
 public class PayrollReport {
     private final List<EmployeeReport> employeeReports;
-    private BigDecimal netAmountPayable;
+    private Double netAmountPayable;
 
     public PayrollReport() {
         this.employeeReports = new LinkedList<>();
-        netAmountPayable = BigDecimal.ZERO;
+        netAmountPayable = 0.0d;
     }
 
     public void addEmployeeReport(EmployeeReport report) {
         employeeReports.add(report);
-        netAmountPayable = netAmountPayable.add(report.getNetAmountPayable());
+        netAmountPayable += report.getNetAmountPayable();
+    }
+
+    public boolean isEmpty() {
+        return employeeReports.isEmpty();
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -22,7 +23,7 @@ public class PayrollController {
     private final PayrollService payrollService;
 
     @GetMapping(consumes = "application/json")
-    public ResponseEntity<PayrollReport> getReport(@RequestBody PayPeriod payPeriod)
+    public ResponseEntity<PayrollReport> getReport(@Valid @RequestBody PayPeriod payPeriod)
             throws InterruptedException, ExecutionException {
 
 //        if (!computation.isDone()) {
@@ -30,11 +31,14 @@ public class PayrollController {
         //  1 - throw exception
         //  2 - wait for it to be done
 //        }
+        CompletableFuture<PayrollReport> computation = payrollService.payroll(payPeriod);
 
-        CompletableFuture<PayrollReport> computation =
-                payrollService.payroll(payPeriod.getStartDate(), payPeriod.getEndDate());
-        // for now just wait for whatever it takes to be done
-        return new ResponseEntity<>(computation.get(), HttpStatus.OK);
+//         for now just wait for whatever it takes to be done
+        PayrollReport payrollReport = computation.get();
+        if (payrollReport.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(payrollReport, HttpStatus.OK);
     }
 
 }
