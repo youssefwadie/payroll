@@ -1,8 +1,8 @@
 package com.github.youssefwadie.payroll.controllers.api;
 
-import com.github.youssefwadie.payroll.entities.Department;
 import com.github.youssefwadie.payroll.deprtment.DepartmentNotFoundException;
 import com.github.youssefwadie.payroll.deprtment.DepartmentService;
+import com.github.youssefwadie.payroll.entities.Department;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

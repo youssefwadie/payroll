@@ -1,8 +1,8 @@
 package com.github.youssefwadie.payroll.controllers.api;
 
 import com.github.youssefwadie.payroll.entities.PayPeriod;
-import com.github.youssefwadie.payroll.payroll.reports.PayrollReport;
 import com.github.youssefwadie.payroll.payroll.PayrollService;
+import com.github.youssefwadie.payroll.payroll.reports.PayrollReport;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
 package com.github.youssefwadie.payroll.payroll;
 
+import com.github.youssefwadie.payroll.attendance.AttendanceRepository;
 import com.github.youssefwadie.payroll.employee.EmployeeService;
 import com.github.youssefwadie.payroll.entities.Allowance;
 import com.github.youssefwadie.payroll.entities.Attendance;
@@ -7,7 +8,6 @@ import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.entities.PayPeriod;
 import com.github.youssefwadie.payroll.payroll.reports.EmployeeReport;
 import com.github.youssefwadie.payroll.payroll.reports.PayrollReport;
-import com.github.youssefwadie.payroll.attendance.AttendanceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

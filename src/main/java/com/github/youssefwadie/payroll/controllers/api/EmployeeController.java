@@ -3,16 +3,15 @@ package com.github.youssefwadie.payroll.controllers.api;
 import com.github.youssefwadie.payroll.attendance.AttendanceNotRegisteredYetException;
 import com.github.youssefwadie.payroll.attendance.AttendanceRegisteredBeforeException;
 import com.github.youssefwadie.payroll.dto.EmployeeAttendanceRegistration;
-import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.employee.EmployeeNotFoundException;
 import com.github.youssefwadie.payroll.employee.EmployeeService;
+import com.github.youssefwadie.payroll.entities.Employee;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
