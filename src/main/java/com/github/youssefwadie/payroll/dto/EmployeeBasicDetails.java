@@ -10,7 +10,6 @@ import lombok.Setter;
 public class EmployeeBasicDetails {
     @JsonProperty("full_name")
     private String fullName;
-    private String ssn;
     private int age;
     private Double basicSalary;
     private String email;
@@ -21,9 +20,9 @@ public class EmployeeBasicDetails {
 
     public EmployeeBasicDetails(Employee employee) {
         this.fullName = employee.getFullName();
-        this.ssn = employee.getSocialSecurityNumber();
         this.basicSalary = employee.getBasicSalary();
         this.email = employee.getEmail();
+        this.age = employee.getAge();
         if (this.supervisor != null) {
             this.supervisor = new SupervisorBasicDetails(employee.getSupervisor().getFullName(), employee.getSupervisor().getDepartment().getName());
         }
