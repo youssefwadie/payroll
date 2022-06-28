@@ -76,10 +76,11 @@ public class Employee extends AbstractEntity {
     private LocalDate hiredDate;
 
     @JsonProperty(value = "email")
+    @NotNull
     @Email(message = "The email must be in the form user@domain.com")
     protected String email;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
     private Employee supervisor;
 

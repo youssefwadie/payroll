@@ -1,7 +1,7 @@
 package com.github.youssefwadie.payroll.security;
 
 import com.github.youssefwadie.payroll.entities.User;
-import com.github.youssefwadie.payroll.repositories.UserRepository;
+import com.github.youssefwadie.payroll.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

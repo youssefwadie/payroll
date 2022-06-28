@@ -1,8 +1,8 @@
-package com.github.youssefwadie.payroll.services;
+package com.github.youssefwadie.payroll.deprtment;
 
 import com.github.youssefwadie.payroll.entities.Department;
-import com.github.youssefwadie.payroll.exceptions.DepartmentNotFoundException;
-import com.github.youssefwadie.payroll.repositories.DepartmentRepository;
+import com.github.youssefwadie.payroll.deprtment.DepartmentNotFoundException;
+import com.github.youssefwadie.payroll.deprtment.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,8 +2,8 @@ package com.github.youssefwadie.payroll.seeders;
 
 import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.entities.Project;
-import com.github.youssefwadie.payroll.repositories.EmployeeRepository;
-import com.github.youssefwadie.payroll.repositories.ProjectRepository;
+import com.github.youssefwadie.payroll.employee.EmployeeRepository;
+import com.github.youssefwadie.payroll.project.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

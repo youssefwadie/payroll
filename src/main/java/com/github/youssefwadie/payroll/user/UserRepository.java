@@ -1,4 +1,4 @@
-package com.github.youssefwadie.payroll.repositories;
+package com.github.youssefwadie.payroll.user;
 
 import com.github.youssefwadie.payroll.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

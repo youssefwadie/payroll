@@ -26,7 +26,7 @@ public class Project extends AbstractEntity {
     @Email(message = "The email must be in the form user@domain.com")
     private String email;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "employees_projects",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))

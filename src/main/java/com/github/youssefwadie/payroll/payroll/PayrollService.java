@@ -1,12 +1,13 @@
-package com.github.youssefwadie.payroll.services;
+package com.github.youssefwadie.payroll.payroll;
 
+import com.github.youssefwadie.payroll.employee.EmployeeService;
 import com.github.youssefwadie.payroll.entities.Allowance;
 import com.github.youssefwadie.payroll.entities.Attendance;
 import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.entities.PayPeriod;
-import com.github.youssefwadie.payroll.reports.EmployeeReport;
-import com.github.youssefwadie.payroll.reports.PayrollReport;
-import com.github.youssefwadie.payroll.repositories.AttendanceRepository;
+import com.github.youssefwadie.payroll.payroll.reports.EmployeeReport;
+import com.github.youssefwadie.payroll.payroll.reports.PayrollReport;
+import com.github.youssefwadie.payroll.attendance.AttendanceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class PayrollService {
      *
      * @param startDate start time of the payroll calculation, not null
      * @param endDate   end time of th payroll calculation, nullable - defaults to the last day in the current month
-     * @return The computed {@link com.github.youssefwadie.payroll.reports.PayrollReport}
+     * @return The computed {@link PayrollReport}
      * @throws InterruptedException when the thread in which the calculation is taking place gets interrupted for any reason
      * @throws NullPointerException when the start date is null
      */
@@ -84,7 +85,7 @@ public class PayrollService {
 
     /**
      * @param payPeriod the pay period for the payroll calculation, not null
-     * @return The computed {@link com.github.youssefwadie.payroll.reports.PayrollReport}
+     * @return The computed {@link PayrollReport}
      * @throws InterruptedException when the thread in which the calculation is taking place gets interrupted for any reason
      * @throws NullPointerException when the payPeriod is null
      */

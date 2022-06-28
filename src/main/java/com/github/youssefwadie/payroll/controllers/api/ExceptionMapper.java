@@ -1,9 +1,13 @@
 package com.github.youssefwadie.payroll.controllers.api;
 
-import com.github.youssefwadie.payroll.exceptions.DepartmentNotFoundException;
-import com.github.youssefwadie.payroll.exceptions.EmployeeNotFoundException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.youssefwadie.payroll.attendance.AttendanceNotRegisteredYetException;
+import com.github.youssefwadie.payroll.attendance.AttendanceRegisteredBeforeException;
+import com.github.youssefwadie.payroll.deprtment.DepartmentNotFoundException;
+import com.github.youssefwadie.payroll.employee.EmployeeNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,8 +22,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ExceptionMapper {
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(MethodArgumentNotValidException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(MethodArgumentNotValidException ex) throws NoSuchFieldException {
         Map<String, String> constraintViolations = new HashMap<>();
         List<ConstraintViolation> requestViolations = ex
                 .getBindingResult()
@@ -30,6 +34,10 @@ public class ExceptionMapper {
 
         for (ConstraintViolation<?> cv : requestViolations) {
             String path = cv.getPropertyPath().toString();
+            JsonProperty jsonProperty = cv.getRootBean().getClass().getDeclaredField(path).getAnnotation(JsonProperty.class);
+            if (jsonProperty != null) {
+                path = jsonProperty.value();
+            }
             constraintViolations.put(path, cv.getMessage());
         }
         return new ResponseEntity<>(constraintViolations, HttpStatus.PRECONDITION_FAILED);
@@ -41,14 +49,47 @@ public class ExceptionMapper {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<Map<String, ?>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         String message = ex.getName().equals("id") ? "out of range: " : ex.getMessage();
-        Map<String, String> map = new LinkedHashMap<>() {{
+        Map<String, ?> map = new LinkedHashMap<>() {{
             put("timestamp", LocalDateTime.now().toString());
-            put("status", "400");
+            put("status", HttpStatus.BAD_REQUEST.value());
             put("message", message);
         }};
 
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Map<String, Object>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        Map<String, Object> response = new LinkedHashMap<>() {{
+            put("timestamp", LocalDateTime.now().toString());
+            put("status", HttpStatus.METHOD_NOT_ALLOWED.value());
+        }};
+        if (ex.getSupportedHttpMethods() != null && !ex.getSupportedHttpMethods().isEmpty()) {
+            response.put("supported-methods", ex.getSupportedHttpMethods());
+        }
+        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler({AttendanceRegisteredBeforeException.class})
+    public ResponseEntity<Map<String, Object>> handleAttendanceRegisteredBeforeException(AttendanceRegisteredBeforeException ex) {
+        Map<String, Object> response = new LinkedHashMap<>() {{
+            put("timestamp", LocalDateTime.now().toString());
+            put("status", HttpStatus.CONFLICT.value());
+            put("message", ex.getMessage());
+        }};
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AttendanceNotRegisteredYetException.class)
+    public ResponseEntity<Map<String, Object>> handleAttendanceNotRegisteredYetException(AttendanceNotRegisteredYetException ex) {
+        Map<String, Object> response = new LinkedHashMap<>() {{
+            put("timestamp", LocalDateTime.now().toString());
+            put("status", HttpStatus.CONFLICT.value());
+            put("message", ex.getMessage());
+        }};
+        return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+    }
+
 }

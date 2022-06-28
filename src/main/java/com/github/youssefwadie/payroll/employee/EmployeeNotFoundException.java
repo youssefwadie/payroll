@@ -1,4 +1,4 @@
-package com.github.youssefwadie.payroll.exceptions;
+package com.github.youssefwadie.payroll.employee;
 
 public class EmployeeNotFoundException extends Exception {
     public EmployeeNotFoundException() {

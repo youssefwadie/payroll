@@ -1,7 +1,7 @@
-package com.github.youssefwadie.payroll.services;
+package com.github.youssefwadie.payroll.role;
 
 import com.github.youssefwadie.payroll.entities.Role;
-import com.github.youssefwadie.payroll.repositories.RoleRepository;
+import com.github.youssefwadie.payroll.role.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

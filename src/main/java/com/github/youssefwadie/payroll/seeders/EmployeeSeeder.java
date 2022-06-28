@@ -1,8 +1,8 @@
 package com.github.youssefwadie.payroll.seeders;
 
 import com.github.youssefwadie.payroll.entities.*;
-import com.github.youssefwadie.payroll.repositories.DepartmentRepository;
-import com.github.youssefwadie.payroll.repositories.EmployeeRepository;
+import com.github.youssefwadie.payroll.deprtment.DepartmentRepository;
+import com.github.youssefwadie.payroll.employee.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -134,7 +134,7 @@ public class EmployeeSeeder {
 
     private String getSsnForName(String name) {
         int nameHashCode = name.hashCode() % 100_000_000;
-        int randomNumber = random.nextInt(999_999_999);
+        int randomNumber = random.nextInt(100_000_000, 999_999_999);
         return String.format("%09d", (nameHashCode + randomNumber) % 999_999_999);
     }
 

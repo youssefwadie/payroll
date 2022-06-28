@@ -1,4 +1,4 @@
-package com.github.youssefwadie.payroll.reports;
+package com.github.youssefwadie.payroll.payroll.reports;
 
 import lombok.Getter;
 

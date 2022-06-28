@@ -1,4 +1,4 @@
-package com.github.youssefwadie.payroll.repositories;
+package com.github.youssefwadie.payroll.payslip;
 
 import com.github.youssefwadie.payroll.entities.Payslip;
 import org.springframework.data.jpa.repository.JpaRepository;

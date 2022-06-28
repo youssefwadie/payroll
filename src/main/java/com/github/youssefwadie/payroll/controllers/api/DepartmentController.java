@@ -1,8 +1,8 @@
 package com.github.youssefwadie.payroll.controllers.api;
 
 import com.github.youssefwadie.payroll.entities.Department;
-import com.github.youssefwadie.payroll.exceptions.DepartmentNotFoundException;
-import com.github.youssefwadie.payroll.services.DepartmentService;
+import com.github.youssefwadie.payroll.deprtment.DepartmentNotFoundException;
+import com.github.youssefwadie.payroll.deprtment.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/api/v1/departments", produces = "application/json")
+@RequestMapping(path = "/api/v1/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
