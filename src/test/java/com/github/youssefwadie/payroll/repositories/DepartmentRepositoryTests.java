@@ -1,5 +1,6 @@
 package com.github.youssefwadie.payroll.repositories;
 
+import com.github.youssefwadie.payroll.deprtment.DepartmentRepository;
 import com.github.youssefwadie.payroll.entities.Department;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,6 +2,7 @@ package com.github.youssefwadie.payroll.repositories;
 
 import com.github.youssefwadie.payroll.entities.PayPeriod;
 import com.github.youssefwadie.payroll.entities.Payslip;
+import com.github.youssefwadie.payroll.payslip.PayslipRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

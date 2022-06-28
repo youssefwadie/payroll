@@ -1,9 +1,9 @@
 package com.github.youssefwadie.payroll.repositories;
 
-import com.github.youssefwadie.payroll.entities.Project;
 import com.github.youssefwadie.payroll.entities.Role;
 import com.github.youssefwadie.payroll.entities.User;
-import org.hibernate.cache.spi.access.CachedDomainDataAccess;
+import com.github.youssefwadie.payroll.role.RoleRepository;
+import com.github.youssefwadie.payroll.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

@@ -1,6 +1,8 @@
 package com.github.youssefwadie.payroll.repositories;
 
+import com.github.youssefwadie.payroll.attendance.AttendanceRepository;
 import com.github.youssefwadie.payroll.entities.Attendance;
+import com.github.youssefwadie.payroll.entities.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -32,6 +34,20 @@ public class AttendanceRepositoryTests {
             assertThat(employeeName).isEqualTo(expectedEmployeeName);
             assertThat(attendance.getTimeIn()).isAfterOrEqualTo(startTime);
             assertThat(attendance.getTimeIn()).isBeforeOrEqualTo(endTime);
+        }
+    }
+
+    @Test
+    void testFindAttendanceByEmployeeAndTimeBefore() {
+        Employee employee = new Employee();
+        employee.setId(5L);
+        LocalDateTime today = LocalDateTime.of(2022, 6, 27, 0, 0, 0);
+        List<Attendance> attendanceList = attendanceRepository.findAttendanceByEmployeeIdAndTimeInPeriod(employee.getId(), today, LocalDateTime.now());
+        assertThat(attendanceList).isNotNull();
+
+        for (Attendance attendance : attendanceList) {
+            assertThat(attendance.getTimeIn()).isAfterOrEqualTo(today);
+            System.out.println(attendance.getTimeIn());
         }
     }
 }

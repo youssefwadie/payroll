@@ -1,5 +1,6 @@
 package com.github.youssefwadie.payroll.repositories;
 
+import com.github.youssefwadie.payroll.employee.EmployeeRepository;
 import com.github.youssefwadie.payroll.entities.Address;
 import com.github.youssefwadie.payroll.entities.Employee;
 import com.github.youssefwadie.payroll.entities.Payslip;
