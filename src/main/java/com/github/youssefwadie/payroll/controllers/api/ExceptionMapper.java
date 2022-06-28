@@ -7,6 +7,7 @@ import com.github.youssefwadie.payroll.deprtment.DepartmentNotFoundException;
 import com.github.youssefwadie.payroll.employee.EmployeeNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -92,4 +93,17 @@ public class ExceptionMapper {
         return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
     }
 
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Map<String, Object>> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException ex) {
+        Map<String, Object> response = new LinkedHashMap<>() {{
+            put("timestamp", LocalDateTime.now().toString());
+            put("status", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
+        }};
+        if (!ex.getSupportedMediaTypes().isEmpty()) {
+            response.put("supported-types", ex.getSupportedMediaTypes());
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+
+    }
 }

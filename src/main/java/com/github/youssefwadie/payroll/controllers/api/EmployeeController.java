@@ -3,6 +3,7 @@ package com.github.youssefwadie.payroll.controllers.api;
 import com.github.youssefwadie.payroll.attendance.AttendanceNotRegisteredYetException;
 import com.github.youssefwadie.payroll.attendance.AttendanceRegisteredBeforeException;
 import com.github.youssefwadie.payroll.dto.EmployeeAttendanceRegistration;
+import com.github.youssefwadie.payroll.dto.EmployeeBasicDetails;
 import com.github.youssefwadie.payroll.employee.EmployeeNotFoundException;
 import com.github.youssefwadie.payroll.employee.EmployeeService;
 import com.github.youssefwadie.payroll.entities.Employee;
@@ -25,13 +26,13 @@ public class EmployeeController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<EmployeeBasicDetails>> getAllEmployees() {
+        return new ResponseEntity<>(employeeService.findAllBasic(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id:\\d+}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) throws EmployeeNotFoundException {
-        return new ResponseEntity<>(employeeService.findById(id), HttpStatus.OK);
+    public ResponseEntity<EmployeeBasicDetails> getEmployeeById(@PathVariable("id") Long id) throws EmployeeNotFoundException {
+        return new ResponseEntity<>(employeeService.findByIdBasic(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create", consumes = "application/json")

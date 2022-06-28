@@ -1,5 +1,6 @@
 package com.github.youssefwadie.payroll.employee;
 
+import com.github.youssefwadie.payroll.dto.EmployeeBasicDetails;
 import com.github.youssefwadie.payroll.entities.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e FROM Employee e WHERE e.department.id = ?1")
     List<Employee> findEmployeesInDepartment(Long departmentId);
 
+    // More projections would increase the performance of the query, but it'll not be very readable
+    @Query("SELECT new com.github.youssefwadie.payroll.dto.EmployeeBasicDetails(e) FROM Employee e WHERE e.id = ?1")
+    EmployeeBasicDetails findByIdBasic(Long id);
+
+    @Query("SELECT new com.github.youssefwadie.payroll.dto.EmployeeBasicDetails(e) FROM Employee e")
+    List<EmployeeBasicDetails> findAllBasic();
 }

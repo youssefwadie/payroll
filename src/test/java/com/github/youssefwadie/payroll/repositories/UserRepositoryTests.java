@@ -36,7 +36,7 @@ public class UserRepositoryTests {
         User admin = new User();
         String password = "admin";
         System.out.println(passwordEncoder.encode(password));
-        admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setPassword(passwordEncoder.encode(password));
         admin.setEmail("admin@payroll.com");
         admin.setFirstName("Admin");
         admin.setLastName("User");
@@ -45,8 +45,25 @@ public class UserRepositoryTests {
         User savedUser = userRepository.save(admin);
 
         assertThat(savedUser.getId()).isGreaterThan(0);
-        assertThat(passwordEncoder.matches("admin", savedUser.getPassword())).isTrue();
+        assertThat(passwordEncoder.matches(password, savedUser.getPassword())).isTrue();
         assertThat(savedUser.getRoles().size()).isEqualTo(1);
     }
 
+    @Test
+    void createNormalUser() {
+        User user = new User();
+        String password = "user";
+        System.out.println(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEmail("user@payroll.com");
+        user.setFirstName("Normal");
+        user.setLastName("User");
+        Role userRole = roleRepository.findById(2L).get();
+        user.setRoles(Set.of(userRole));
+        User savedUser = userRepository.save(user);
+
+        assertThat(savedUser.getId()).isGreaterThan(0);
+        assertThat(passwordEncoder.matches(password, savedUser.getPassword())).isTrue();
+        assertThat(savedUser.getRoles().size()).isEqualTo(1);
+    }
 }

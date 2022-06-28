@@ -2,7 +2,6 @@ package com.github.youssefwadie.payroll.security;
 
 import com.github.youssefwadie.payroll.entities.Role;
 import com.github.youssefwadie.payroll.entities.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
 public class PayrollUserDetails implements UserDetails {
     private final User user;
 

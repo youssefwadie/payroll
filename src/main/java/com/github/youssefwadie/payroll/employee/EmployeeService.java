@@ -4,6 +4,7 @@ import com.github.youssefwadie.payroll.attendance.AttendanceNotRegisteredYetExce
 import com.github.youssefwadie.payroll.attendance.AttendanceRegisteredBeforeException;
 import com.github.youssefwadie.payroll.attendance.AttendanceRepository;
 import com.github.youssefwadie.payroll.dto.EmployeeAttendanceRegistration;
+import com.github.youssefwadie.payroll.dto.EmployeeBasicDetails;
 import com.github.youssefwadie.payroll.dto.RegistrationType;
 import com.github.youssefwadie.payroll.entities.Attendance;
 import com.github.youssefwadie.payroll.entities.Employee;
@@ -24,8 +25,8 @@ public class EmployeeService {
     private final AttendanceRepository attendanceRepository;
     private final ProjectRepository projectRepository;
 
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public List<EmployeeBasicDetails> findAllBasic() {
+        return employeeRepository.findAllBasic();
     }
 
     public List<Employee> findAllWithAllowances() {
@@ -43,6 +44,10 @@ public class EmployeeService {
 
     public Employee findById(Long id) throws EmployeeNotFoundException {
         return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(String.format("No employee with id: %d was found.", id)));
+    }
+
+    public EmployeeBasicDetails findByIdBasic(Long id) {
+        return employeeRepository.findByIdBasic(id);
     }
 
     public void deleteEmployeeById(Long id) throws EmployeeNotFoundException {
