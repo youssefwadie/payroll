@@ -43,13 +43,13 @@ Installation <a name = "installation"></a>
 End Points <a name = "end-points"></a>
 ===
 * `/api/v1/employees` list all employees with a set of their information; *full name, age, basic salary, email, supervisor and department* [GET].
-* `/api/v1/employees/{id}` get a set of basic information about a given employee.
+* `/api/v1/employees/{id}` get a set of basic information about a given employee [GET].
 * `/api/v1/employees/create` add a new employee to the system - accepts JSON [POST].
 * `/api/v1/employees/delete/{id}` remove an employee from the system [DELETE].
 * `/api/v1/employees/register` register an employee's attendance - accepts JSON [PUT].
 * `/api/v1/payroll` calculate generate a payroll report for a given period of time - accepts JSON [GET].
 * `/api/v1/departments/` list all departments with a set of their information; name, id [GET].
-* `/api/v1/departments/{id}` get all the available information about a given department.
+* `/api/v1/departments/{id}` get all the available information about a given department [GET].
 ---
 Built with <a name = "built-with"></a>
 ===
