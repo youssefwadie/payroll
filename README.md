@@ -14,7 +14,9 @@ About <a name="about"></a>
 <p>
 Payroll is a Java software which can be used to handle the process of calculating employees' pay in a company.
 It handles the employees attendance and basic information about them, department they belong to and projects they work on.
-The authentication system is basic-http (JWT-based will be implemented).
+<br>
+The authentication system is <s>Session Based (JWT Based will be implemented)</s> JWT Based.
+<br>
 The authorization system works as follows:
 There are two types of users in the system; normal user and admin user.
 An admin user can access all the end-points, normal user can access any get endpoint under the <em>employees</em> and <em>departments</em> resources.

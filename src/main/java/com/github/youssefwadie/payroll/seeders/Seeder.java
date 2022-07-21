@@ -34,7 +34,7 @@ public class Seeder implements CommandLineRunner {
                 }
             }
 
-            if (seedProjectEmployees && (projectsSeeder.projectsCount() != 0 && projectsSeeder.projectsCount() != 0)) {
+            if (seedProjectEmployees && projectsSeeder.projectsCount() != 0) {
                 projectsSeeder.assignProjectsToEmployees();
             }
 
